@@ -56,7 +56,7 @@ public class DecisionTreeImpl extends DecisionTree {
       System.out.format(
               "%s %.5f\n",
               attribute,
-              info_gain(attribute, train.instances)
+              infoGain(attribute, train.instances)
       );
     }
   }
@@ -118,45 +118,33 @@ public class DecisionTreeImpl extends DecisionTree {
   }
 
 
-  private float info_gain(String attr, List<Instance> instances) {
+  private float infoGain(String attr, List<Instance> instances) {
     return entropy(instances) - entropy(instances, attr);
   }
- /* private float entropy(List<Instance> instances) {
-    float sum = 0.0f;
-    for (String label : labels) {
-      int matches = 0;
-      int label_index = labels.indexOf(label);
-      for (Instance instance : instances) {
-        if (instance.label.equals(labels.get(label_index))) {
-          matches++;
-        }
-      }
-      float prob = ((float)matches)/((float)instances.size());
-      if (instances.size() != 0 && prob > 0.0f) {
-        sum -= prob * Math.log(prob)/Math.log(2.0);
-      }
 
-    }
-    return sum;
-  }*/
- private static double Log2(double n) {
+ private static double log2(double n) {
    return Math.log(n) / Math.log(2);
  }
 
 
+  private int CountPositiveLabels(List<Instance> instances){
+   int res =0 ;
+   for (Instance instance : instances) {
+      if (instance.label.equals(labels.get(0))) {
+        res++;
+      }
+    }
+   return res;
+  }
+
 
   private float entropy(List<Instance> instances) {
     float sum = 0.0f;
-    int matches = 0;
-    for (Instance instance : instances) {
-        if (instance.label.equals(labels.get(0))) {
-          matches++;
-        }
-    }
-    float prob = ((float)matches)/((float)instances.size());
-    sum -= prob * Log2(prob);
-    prob =((float)(instances.size()-matches))/((float)instances.size());
-    sum -= prob * Log2(prob);
+    int positiveInstances=CountPositiveLabels(instances);
+    float prob = ((float)positiveInstances)/((float)instances.size());
+    sum -= prob * log2(prob);
+    prob =((float)(instances.size()-positiveInstances))/((float)instances.size());
+    sum -= prob * log2(prob);
     return sum;
   }
 
@@ -164,45 +152,20 @@ public class DecisionTreeImpl extends DecisionTree {
     //entropy(attr) = sum_over_values(prob(attr = value)*entropy(attr, value))
     float sum = 0.0f;
     for (String value : attributeValues.get(attr)) {
-      int matches = 0;
+      List<Instance> tmp = new ArrayList<>();
       for (Instance instance : instances) {
-        if (Integer.parseInt(instance.attributes.get(attributes.indexOf(attr))) == attributeValues.get(attr).indexOf(value)) {
-          ++matches;
+        if (instance.attributes.get(attributes.indexOf(attr)).equals(value)) {
+          tmp.add(instance);
         }
       }
       if (instances.size() != 0) {
-        sum += ((float)matches)/((float)instances.size())*entropy(instances, attr, value);
-      }
-    }
-
-    return sum;
-  }
-
-
-  private float entropy(List<Instance> instances, String attr, String value) {
-    float sum = 0.0f;
-    List<Instance> matching_instances = new ArrayList<Instance>();
-    for (Instance instance : instances) {
-      if (Integer.parseInt(instance.attributes.get(attributes.indexOf(attr))) == attributeValues.get(attr).indexOf(value)) {
-        matching_instances.add(instance);
-      }
-    }
-
-    for (String label : labels) {
-      int matches = 0;
-      int label_index = labels.indexOf(label);
-      for (Instance instance : matching_instances) {
-        if (Integer.parseInt(instance.label) == label_index) {
-          ++matches;
-        }
-      }
-      float prob = ((float)matches)/((float)matching_instances.size());
-      if (matching_instances.size() != 0 && prob > 0.0f) {
-        sum -= prob * Math.log(prob)/Math.log(2.0);
+        sum += ((float)tmp.size())/((float)instances.size())*entropy(tmp);
       }
     }
     return sum;
   }
+
+
   /**
    * Helper function to get the index of the label in labels list
    */
