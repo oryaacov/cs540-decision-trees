@@ -138,7 +138,7 @@ public class DecisionTreeImpl extends DecisionTree {
         counter++;
       }
     }
-    double accuracy = (double) count / test.instances.size();
+    double accuracy = (double) counter/ test.instances.size();
     System.out.format("%.5f\n", accuracy);
   }
 
