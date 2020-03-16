@@ -1,6 +1,5 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import javax.swing.tree.TreeNode;
+import java.util.*;
 
 /**
  * Fill in the implementation details of the class DecisionTree using this file. Any methods or
@@ -16,9 +15,11 @@ public class DecisionTreeImpl extends DecisionTree {
   //ordered list of class labels
   private List<String> labels; 
   //ordered list of attributes
-  private List<String> attributes; 
+  private List<String> attributes;
+
+  private Float[] attrGains;
   //map to ordered discrete values taken by attributes
-  private Map<String, List<String>> attributeValues; 
+  private Map<String, List<String>> attributeValues;
   
   /**
    * Answers static questions about decision trees.
@@ -37,8 +38,10 @@ public class DecisionTreeImpl extends DecisionTree {
     this.labels = train.labels;
     this.attributes = train.attributes;
     this.attributeValues = train.attributeValues;
-
+    this.attrGains=new Float[this.attributes.size()];
   }
+
+
 
   @Override
   public String classify(Instance instance) {
@@ -76,10 +79,117 @@ public class DecisionTreeImpl extends DecisionTree {
     this.labels = train.labels;
     this.attributes = train.attributes;
     this.attributeValues = train.attributeValues;
-    // TODO: add code here
-    // only for extra credits
+    List<Instance> instances = train.instances;
+    String currentPluralityValue = pluralityValue(instances);
+
+    if (instances==null || instances.isEmpty()){
+      this.root=null;//if there no instances don't generate any tree
+    }
+    if(sameLabelForAll(instances))
+    {
+      String label = instances.get(0).label;
+      this.root = new DecTreeNode(label, null, null, true); // attribute = null, parentAttribute = null, terminal = true
+      return;
+    }
+
+    int mostImportantAttrIndex = ImportanceAttrIndex(attributes,instances);
+    DecTreeNode node = new DecTreeNode(null, attributes.get(mostImportantAttrIndex), null, false);
+    this.root = node;
+    List<String> bestAttributeValues = attributeValues.get(mostImportantAttrIndex);
+    for(String value : bestAttributeValues) {
+      buildTree(filterInstancesByAttr(instances, attributes.get(mostImportantAttrIndex), value), node, value,currentPluralityValue);
+    }
   }
-  
+
+
+  private boolean sameLabelForAll(List<Instance> instances)
+  {
+    for(int i = 1; i < instances.size(); i++)
+    {
+      if(!instances.get(0).label.equals(instances.get(i).label))
+        return false;
+    }
+    return true;
+  }
+
+
+  private void calculateAttributesGain(List<Instance> instances,List<String> attributes){
+    for (int i=0;i< attributes.size();i++){
+      if (attrGains[i]>=0) {
+        attrGains[i] = infoGain(attributes.get(i), instances);
+      }
+    }
+  }
+
+  private int ImportanceAttrIndex(List<String> attributes,  List<Instance> instances) {
+    float max =-1;
+    int index=0;
+    calculateAttributesGain(instances,attributes);
+    for (int i = 0; i < attrGains.length; i++)
+    {
+      if (attrGains[i]>max){
+        max=attrGains[i];
+        index=i;
+      }
+    }
+    return index;
+  }
+
+
+  // recursive method for building the tree one layer at a time, passes to each son the entire information of the dataset
+  private void buildTree(List<Instance> instances, DecTreeNode parent, String parentValue,String parentPluralityValue)
+  {
+    String currentPluralityValue = pluralityValue(instances);
+    if (instances.isEmpty()){
+      parent.addChild(new DecTreeNode(parentPluralityValue,null,parentValue,true));
+    }
+    if(attributes == null || attributes.isEmpty())
+    {
+      DecTreeNode node = new DecTreeNode(currentPluralityValue, null, parentValue, true);
+      parent.addChild(node);
+      return;
+    }
+
+    if(sameLabelForAll(instances))
+    {
+      parent.addChild(new DecTreeNode(instances.get(0).label, null, parentValue, true));
+      return;
+    }
+
+    int mostImportantAttrIndex = ImportanceAttrIndex(attributes,instances);
+    DecTreeNode node =new DecTreeNode(null, attributes.get(mostImportantAttrIndex), parentValue, false);
+    parent.addChild(node);
+    //mark as removed
+    attrGains[mostImportantAttrIndex]=-1.0f;
+    for(String value : attributeValues.get(mostImportantAttrIndex)){
+          buildTree(filterInstancesByAttr(instances, attributes.get(mostImportantAttrIndex), value), node, value,currentPluralityValue);
+    }
+  }
+
+
+
+  private List<Instance> filterInstancesByAttr(List<Instance> instances, String attribute, String attributeValue)
+  {
+    int attributeIndex = getAttributeIndex(attribute);
+    List<Instance> newInstances = new ArrayList();
+    for(Instance instance : instances) {
+      if(instance.attributes.get(attributeIndex).equals(attributeValue))
+        newInstances.add(instance);
+    }
+    return newInstances;
+  }
+
+  // boundary checking avoided for readability
+  private String pluralityValue (List<Instance> instances) {
+    ArrayList<Integer> labelsCounts = new ArrayList<Integer>(labels.size());
+    for(Instance instance : instances)
+    {
+      int i=labels.indexOf(instance.label);
+      labelsCounts.set(i,labelsCounts.get(i)+1);
+    }
+    return labels.get(labelsCounts.indexOf(Collections.max(labelsCounts)));
+  }
+
   @Override
   /**
    * Print the decision tree in the specified format
