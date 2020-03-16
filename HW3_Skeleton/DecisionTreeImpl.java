@@ -17,7 +17,6 @@ public class DecisionTreeImpl extends DecisionTree {
   //ordered list of attributes
   private List<String> attributes;
 
-  private static double[] attrGains;
   //map to ordered discrete values taken by attributes
   private Map<String, List<String>> attributeValues;
   
@@ -38,9 +37,8 @@ public class DecisionTreeImpl extends DecisionTree {
     this.labels = train.labels;
     this.attributes = train.attributes;
     this.attributeValues = train.attributeValues;
-    this.attrGains=new double[this.attributes.size()];
     List<Instance> instances = train.instances;
-
+    double[] attrGains=new double[attributes.size()];
     String currentPluralityValue = pluralityValue(instances);
 
     if (instances==null || instances.isEmpty()){
@@ -53,21 +51,68 @@ public class DecisionTreeImpl extends DecisionTree {
       return;
     }
 
-    int mostImportantAttrIndex = ImportanceAttrIndex(attributes,instances);
+    int mostImportantAttrIndex = ImportanceAttrIndex(attributes,instances,attrGains);
     DecTreeNode node = new DecTreeNode(null, attributes.get(mostImportantAttrIndex), null, false);
     this.root = node;
+    attrGains[mostImportantAttrIndex]=-1.0f;
+
     for(String value : attributeValues.get(attributes.get(mostImportantAttrIndex))) {
-      buildTree(filterInstancesByAttr(instances, attributes.get(mostImportantAttrIndex), value), node, value,currentPluralityValue);
+      buildTree(filterInstancesByAttr(instances, attributes.get(mostImportantAttrIndex), value), node, value,currentPluralityValue, Arrays.copyOf(attrGains,attrGains.length));
     }
   }
 
 
 
+  // recursive method for building the tree one layer at a time, passes to each son the entire information of the dataset
+  private void buildTree(List<Instance> instances, DecTreeNode parent, String parentValue,String parentPluralityValue,double[] attrGains)
+  {
+    String currentPluralityValue = pluralityValue(instances);
+    if (instances.isEmpty()){
+      parent.addChild(new DecTreeNode(parentPluralityValue,null,parentValue,true));
+      return;
+    }
+    if(isAllNegative(attrGains))
+    {
+      DecTreeNode node = new DecTreeNode(currentPluralityValue, null, parentValue, true);
+      parent.addChild(node);
+      return;
+    }
+
+    if(sameLabelForAll(instances))
+    {
+      parent.addChild(new DecTreeNode(instances.get(0).label, null, parentValue, true));
+      return;
+    }
+
+    int mostImportantAttrIndex = ImportanceAttrIndex(attributes,instances,attrGains);
+    DecTreeNode node =new DecTreeNode(null, attributes.get(mostImportantAttrIndex), parentValue, false);
+    parent.addChild(node);
+    //mark as removed
+    attrGains[mostImportantAttrIndex]=-1.0f;
+    for(String value : attributeValues.get(attributes.get(mostImportantAttrIndex))){
+      buildTree(filterInstancesByAttr(instances, attributes.get(mostImportantAttrIndex), value), node, value,currentPluralityValue,Arrays.copyOf(attrGains,attrGains.length));
+    }
+  }
   @Override
   public String classify(Instance instance) {
-
-    // TODO: add code here
-    return "";
+    DecTreeNode node = this.root;
+    while(!node.terminal)
+    {
+      boolean found = false;
+      for (int i = 0; i < node.children.size(); i++)
+      {
+        DecTreeNode child = node.children.get(i);
+        if (child.parentAttributeValue.equals(instance.attributes.get(getAttributeIndex(node.attribute))))
+        {
+          node = child;
+          found = true;
+          break;
+        }
+      }
+      if(!found)
+        return null;
+    }
+    return node.label;
   }
 
   @Override
@@ -114,19 +159,19 @@ public class DecisionTreeImpl extends DecisionTree {
   }
 
 
-  private void calculateAttributesGain(List<Instance> instances,List<String> attributes){
-    for (int i=0;i< attributes.size();i++){
-      if (attrGains[i]>=0) {
-         double temp = infoGain(attributes.get(i), instances);
-         attrGains[i] = temp;
+  private void calculateAttributesGain(List<Instance> instances,List<String> attributes,double[] attrGains){
+    for (int i=0;i< attributes.size();i++) {
+      if (attrGains[i] >= 0) {
+        double temp = infoGain(attributes.get(i), instances);
+        attrGains[i] = temp;
       }
     }
   }
 
-  private int ImportanceAttrIndex(List<String> attributes,  List<Instance> instances) {
+  private int ImportanceAttrIndex(List<String> attributes,  List<Instance> instances,double[] attrGains) {
     double max =-1;
     int index=0;
-    calculateAttributesGain(instances,attributes);
+    calculateAttributesGain(instances,attributes,attrGains);
     for (int i = 0; i < attrGains.length; i++)
     {
       if (attrGains[i]>max){
@@ -146,36 +191,6 @@ public class DecisionTreeImpl extends DecisionTree {
       return true;
   }
 
-  // recursive method for building the tree one layer at a time, passes to each son the entire information of the dataset
-  private void buildTree(List<Instance> instances, DecTreeNode parent, String parentValue,String parentPluralityValue)
-  {
-    String currentPluralityValue = pluralityValue(instances);
-    if (instances.isEmpty()){
-      parent.addChild(new DecTreeNode(parentPluralityValue,null,parentValue,true));
-      return;
-    }
-    if(isAllNegative(attrGains))
-    {
-      DecTreeNode node = new DecTreeNode(currentPluralityValue, null, parentValue, true);
-      parent.addChild(node);
-      return;
-    }
-
-    if(sameLabelForAll(instances))
-    {
-      parent.addChild(new DecTreeNode(instances.get(0).label, null, parentValue, true));
-      return;
-    }
-
-    int mostImportantAttrIndex = ImportanceAttrIndex(attributes,instances);
-    DecTreeNode node =new DecTreeNode(null, attributes.get(mostImportantAttrIndex), parentValue, false);
-    parent.addChild(node);
-    //mark as removed
-    attrGains[mostImportantAttrIndex]=-1.0f;
-    for(String value : attributeValues.get(attributes.get(mostImportantAttrIndex))){
-          buildTree(filterInstancesByAttr(instances, attributes.get(mostImportantAttrIndex), value), node, value,currentPluralityValue);
-    }
-  }
 
 
 
@@ -274,14 +289,10 @@ public class DecisionTreeImpl extends DecisionTree {
     float prob = ((float)positiveInstances)/((float)instances.size());
     if (prob>0) {
       sum -= prob * log2(prob);
-    }else{
-      System.out.println(instances);
     }
     prob =((float)(instances.size()-positiveInstances))/((float)instances.size());
     if (prob>0) {
       sum -= prob * log2(prob);
-    }else{
-      System.out.println(instances);
     }
     return sum;
   }

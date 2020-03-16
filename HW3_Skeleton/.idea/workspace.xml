@@ -40,7 +40,7 @@
     <configuration name="HW3" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="HW3" />
       <module name="HW3_Skeleton" />
-      <option name="PROGRAM_PARAMETERS" value="1 prune_train.txt prune_test.txt " />
+      <option name="PROGRAM_PARAMETERS" value="0 prune_train.txt prune_test.txt " />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -80,75 +80,89 @@
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state x="2588" y="178" width="574" height="679" key="#HW3_(2)/1920.0.1920.1080/0.0.1920.1040@1920.0.1920.1080" timestamp="1584310631031" />
-    <state x="2338" y="177" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1584391784737">
+    <state x="2338" y="177" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1584398270523">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state x="2338" y="177" key="#com.intellij.execution.impl.EditConfigurationsDialog/1920.0.1920.1080/0.0.1920.1040@1920.0.1920.1080" timestamp="1584391784737" />
-    <state width="489" height="466" key="DebuggerActiveHint" timestamp="1584393374078">
+    <state x="2338" y="177" key="#com.intellij.execution.impl.EditConfigurationsDialog/1920.0.1920.1080/0.0.1920.1040@1920.0.1920.1080" timestamp="1584398270523" />
+    <state width="489" height="466" key="DebuggerActiveHint" timestamp="1584397434973">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state width="489" height="466" key="DebuggerActiveHint/1920.0.1920.1080/0.0.1920.1040@1920.0.1920.1080" timestamp="1584393374078" />
+    <state width="489" height="466" key="DebuggerActiveHint/1920.0.1920.1080/0.0.1920.1040@1920.0.1920.1080" timestamp="1584397434973" />
     <state x="2663" y="277" width="424" height="482" key="FileChooserDialogImpl" timestamp="1584371770886">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state x="2663" y="277" width="424" height="482" key="FileChooserDialogImpl/1920.0.1920.1080/0.0.1920.1040@1920.0.1920.1080" timestamp="1584371770886" />
-    <state width="1874" height="264" key="GridCell.Tab.0.bottom" timestamp="1584393522137">
+    <state width="1874" height="511" key="GridCell.Tab.0.bottom" timestamp="1584398435829">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state width="1874" height="264" key="GridCell.Tab.0.bottom/1920.0.1920.1080/0.0.1920.1040@1920.0.1920.1080" timestamp="1584393522137" />
-    <state width="1874" height="264" key="GridCell.Tab.0.center" timestamp="1584393522137">
+    <state width="1874" height="511" key="GridCell.Tab.0.bottom/1920.0.1920.1080/0.0.1920.1040@1920.0.1920.1080" timestamp="1584398435829" />
+    <state width="1874" height="511" key="GridCell.Tab.0.center" timestamp="1584398435828">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state width="1874" height="264" key="GridCell.Tab.0.center/1920.0.1920.1080/0.0.1920.1040@1920.0.1920.1080" timestamp="1584393522137" />
-    <state width="1874" height="264" key="GridCell.Tab.0.left" timestamp="1584393522137">
+    <state width="1874" height="511" key="GridCell.Tab.0.center/1920.0.1920.1080/0.0.1920.1040@1920.0.1920.1080" timestamp="1584398435828" />
+    <state width="1874" height="511" key="GridCell.Tab.0.left" timestamp="1584398435828">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state width="1874" height="264" key="GridCell.Tab.0.left/1920.0.1920.1080/0.0.1920.1040@1920.0.1920.1080" timestamp="1584393522137" />
-    <state width="1874" height="264" key="GridCell.Tab.0.right" timestamp="1584393522137">
+    <state width="1874" height="511" key="GridCell.Tab.0.left/1920.0.1920.1080/0.0.1920.1040@1920.0.1920.1080" timestamp="1584398435828" />
+    <state width="1874" height="511" key="GridCell.Tab.0.right" timestamp="1584398435828">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state width="1874" height="264" key="GridCell.Tab.0.right/1920.0.1920.1080/0.0.1920.1040@1920.0.1920.1080" timestamp="1584393522137" />
-    <state width="1874" height="264" key="GridCell.Tab.1.bottom" timestamp="1584393522137">
+    <state width="1874" height="511" key="GridCell.Tab.0.right/1920.0.1920.1080/0.0.1920.1040@1920.0.1920.1080" timestamp="1584398435828" />
+    <state width="1874" height="264" key="GridCell.Tab.1.bottom" timestamp="1584397556781">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state width="1874" height="264" key="GridCell.Tab.1.bottom/1920.0.1920.1080/0.0.1920.1040@1920.0.1920.1080" timestamp="1584393522137" />
-    <state width="1874" height="264" key="GridCell.Tab.1.center" timestamp="1584393522137">
+    <state width="1874" height="264" key="GridCell.Tab.1.bottom/1920.0.1920.1080/0.0.1920.1040@1920.0.1920.1080" timestamp="1584397556781" />
+    <state width="1874" height="264" key="GridCell.Tab.1.center" timestamp="1584397556781">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state width="1874" height="264" key="GridCell.Tab.1.center/1920.0.1920.1080/0.0.1920.1040@1920.0.1920.1080" timestamp="1584393522137" />
-    <state width="1874" height="264" key="GridCell.Tab.1.left" timestamp="1584393522137">
+    <state width="1874" height="264" key="GridCell.Tab.1.center/1920.0.1920.1080/0.0.1920.1040@1920.0.1920.1080" timestamp="1584397556781" />
+    <state width="1874" height="264" key="GridCell.Tab.1.left" timestamp="1584397556781">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state width="1874" height="264" key="GridCell.Tab.1.left/1920.0.1920.1080/0.0.1920.1040@1920.0.1920.1080" timestamp="1584393522137" />
-    <state width="1874" height="264" key="GridCell.Tab.1.right" timestamp="1584393522137">
+    <state width="1874" height="264" key="GridCell.Tab.1.left/1920.0.1920.1080/0.0.1920.1040@1920.0.1920.1080" timestamp="1584397556781" />
+    <state width="1874" height="264" key="GridCell.Tab.1.right" timestamp="1584397556781">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state width="1874" height="264" key="GridCell.Tab.1.right/1920.0.1920.1080/0.0.1920.1040@1920.0.1920.1080" timestamp="1584393522137" />
+    <state width="1874" height="264" key="GridCell.Tab.1.right/1920.0.1920.1080/0.0.1920.1040@1920.0.1920.1080" timestamp="1584397556781" />
     <state x="434" y="0" width="1486" height="1078" key="SettingsEditor" timestamp="1584375149820">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="434" y="0" width="1486" height="1078" key="SettingsEditor/1920.0.1920.1080/0.0.1920.1040@1920.0.1920.1080" timestamp="1584375149820" />
-    <state x="2403" y="124" width="944" height="787" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1584378472005">
+    <state x="2403" y="124" width="944" height="787" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1584394402988">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state x="2403" y="124" width="944" height="787" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/1920.0.1920.1080/0.0.1920.1040@1920.0.1920.1080" timestamp="1584378472005" />
+    <state x="2403" y="124" width="944" height="787" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/1920.0.1920.1080/0.0.1920.1040@1920.0.1920.1080" timestamp="1584394402988" />
     <state x="2020" y="99" width="1720" height="840" key="dock-window-1" timestamp="1584309955016">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state x="2020" y="99" width="1720" height="840" key="dock-window-1/1920.0.1920.1080/0.0.1920.1040@1920.0.1920.1080" timestamp="1584309955016" />
+    <state x="2566" y="121" width="693" height="795" key="find.popup" timestamp="1584394625249">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2566" y="121" width="693" height="795" key="find.popup/1920.0.1920.1080/0.0.1920.1040@1920.0.1920.1080" timestamp="1584394625249" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/DecisionTreeImpl.java</url>
-          <line>165</line>
-          <option name="timeStamp" value="69" />
+          <line>122</line>
+          <option name="timeStamp" value="74" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/HW3.java</url>
+          <line>73</line>
+          <option name="timeStamp" value="75" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/HW3.java</url>
+          <line>85</line>
+          <option name="timeStamp" value="76" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/DecisionTreeImpl.java</url>
-          <line>163</line>
-          <option name="timeStamp" value="70" />
+          <line>58</line>
+          <option name="timeStamp" value="81" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
