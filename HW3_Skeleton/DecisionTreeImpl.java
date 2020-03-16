@@ -131,8 +131,18 @@ public class DecisionTreeImpl extends DecisionTree {
   
   @Override
   public void printAccuracy(DataSet test) {
-    // TODO: add code here
+    int counter = 0;
+    for(Instance instance : test.instances)
+    {
+      if(this.classify(instance).equals(instance.label)) {
+        counter++;
+      }
+    }
+    double accuracy = (double) count / test.instances.size();
+    System.out.format("%.5f\n", accuracy);
   }
+
+
     /**
    * Build a decision tree given a training set then prune it using a tuning set.
    * ONLY for extra credits
